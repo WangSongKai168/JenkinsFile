@@ -30,10 +30,10 @@ pipeline {
             script {
                 withCredentials([string(credentialsId: 'TOKEN', variable: 'TOKEN')]){
                     withCredentials([string(credentialsId: 'GROUP_ID', variable: 'GROUP_ID')]){
-                        def url = "http://aspnetcore:32080/api/Alert/AlertWebhook"
-                        def jsonBody = '{"StatusCode": "SUCCESS"}'
+                        url = "http://aspnetcore:32080/api/Alert/AlertWebhook"
+                        jsonBody = '{"StatusCode": "SUCCESS"}'
                         sh '''
-                            curl -X POST -H 'Content-Type: application/json' -d '{"StatusCode": "SUCCESS"}' http://aspnetcore/api/Alert/AlertWebhook
+                            curl -X POST -H 'Content-Type: application/json' -d '${jsonBody}' ${url}
                         '''
                     }
                 }
@@ -44,10 +44,10 @@ pipeline {
             script {
                 withCredentials([string(credentialsId: 'TOKEN', variable: 'TOKEN')]){
                     withCredentials([string(credentialsId: 'GROUP_ID', variable: 'GROUP_ID')]){
-                        def url = "http://aspnetcore:32080/api/Alert/AlertWebhook"
-                        def jsonBody = '{"StatusCode": "FAILURE"}'
+                        url = "http://aspnetcore:32080/api/Alert/AlertWebhook"
+                        jsonBody = '{"StatusCode": "FAILURE"}'
                         sh '''
-                            curl -X POST -H 'Content-Type: application/json' -d '{"StatusCode": "FAILURE"}' http://aspnetcore/api/Alert/AlertWebhook
+                            curl -X POST -H 'Content-Type: application/json' -d '${jsonBody}' ${url}
                         '''
                     }
                 }
