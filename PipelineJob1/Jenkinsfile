@@ -12,11 +12,9 @@ pipeline {
                 withCredentials([string(credentialsId: 'TOKEN', variable: 'TOKEN')]){
                     withCredentials([string(credentialsId: 'GROUP_ID', variable: 'GROUP_ID')]){
                         sh  '''
-                            // TOKEN="test-token"
-                            // GROUP_ID="-000000000"
-                            CODE=$(curl -o /dev/null -s -w %{http_code} www.example.com)
+                            Command=$(curl -o /dev/null -s -w %{http_code} www.example.com)
        
-                            if [ "${CODE}" != "200" ]; then
+                            if [ "${Command}" != "200" ]; then
                               message="www.example.com response code != 200."
                               curl -X GET "https://api.telegram.org/bot${TOKEN}/sendMessage" \
                                   -d "chat_id=${GROUP_ID}&text=${message}"
