@@ -33,7 +33,7 @@ pipeline {
                         def url = "http://aspnetcore:32080/api/Alert/AlertWebhook"
                         def jsonBody = '{"StatusCode": "success"}'
                         sh '''
-                            curl -X POST -H 'Content-Type: application/json' -d '${jsonBody}' http://aspnetcore:32080/api/Alert/AlertWebhook
+                            curl -X POST -H 'Content-Type: application/json' -d '${jsonBody}' http://aspnetcore/api/Alert/AlertWebhook
                         '''
                     }
                 }
@@ -47,7 +47,7 @@ pipeline {
                         def url = "http://aspnetcore:32080/api/Alert/AlertWebhook"
                         def jsonBody = '{"StatusCode": "failure"}'
                         sh '''
-                            curl -X POST -H 'Content-Type: application/json' -d '${jsonBody}' http://aspnetcore:32080/api/Alert/AlertWebhook
+                            curl -X POST -H 'Content-Type: application/json' -d '${jsonBody}' http://aspnetcore/api/Alert/AlertWebhook
                         '''
                     }
                 }
