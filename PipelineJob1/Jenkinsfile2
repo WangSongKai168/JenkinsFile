@@ -28,8 +28,8 @@ pipeline {
         success{
             echo "success"
             script {
-                withCredentials([string(credentialsId: 'ithome-telegram-bot-token', variable: 'TOKEN')]){
-                    withCredentials([string(credentialsId: 'ithome-telegram-notification-group', variable: 'GROUP_ID')]){
+                withCredentials([string(credentialsId: 'TOKEN', variable: 'TOKEN')]){
+                    withCredentials([string(credentialsId: 'GROUP_ID', variable: 'GROUP_ID')]){
                         def url = "http://aspnetcore:32080/api/Alert/AlertWebhook"
                         def jsonBody = '{"StatusCode": "success"}'
                         sh '''
@@ -42,8 +42,8 @@ pipeline {
         failure{
             echo "failure"          
             script {
-                withCredentials([string(credentialsId: 'ithome-telegram-bot-token', variable: 'TOKEN')]){
-                    withCredentials([string(credentialsId: 'ithome-telegram-notification-group', variable: 'GROUP_ID')]){
+                withCredentials([string(credentialsId: 'TOKEN', variable: 'TOKEN')]){
+                    withCredentials([string(credentialsId: 'GROUP_ID', variable: 'GROUP_ID')]){
                         def url = "http://aspnetcore:32080/api/Alert/AlertWebhook"
                         def jsonBody = '{"StatusCode": "failure"}'
                         sh '''
