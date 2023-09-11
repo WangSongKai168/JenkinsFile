@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+    stages {
+        stage ("Stage1: Request website") {
+            steps{
+                script{
+                    response_code = sh (
+                        script: "curl -o /dev/null -s -w %{http_code} www.example.com",
+                        returnStdout: true
+                    ).toInteger()
+                    
+                    echo "${response_code}"                    
+                }
+            }
+        }
+        stage ("Stage2: Check response code") {
+            steps{
+                script{
+                    if ( response_code != 200 ){
+                        sh "false"
+                    }             
+                }
+
+            }
+        }
+    }
+    post {
+        success{
+            echo "success"
+            script {
+                withCredentials([string(credentialsId: 'ithome-telegram-bot-token', variable: 'TOKEN')]){
+                    withCredentials([string(credentialsId: 'ithome-telegram-notification-group', variable: 'GROUP_ID')]){
+                        def url = http://aspnetcore:32080/api/Alert/AlertWebhook"
+                        def jsonBody = '{"StatusCode": "success"}'
+                        sh '''
+                            curl -X POST -H 'Content-Type: application/json' -d '${jsonBody}' ${url}
+                        '''
+                    }
+                }
+            }
+        }
+        failure{
+            echo "failure"          
+            script {
+                withCredentials([string(credentialsId: 'ithome-telegram-bot-token', variable: 'TOKEN')]){
+                    withCredentials([string(credentialsId: 'ithome-telegram-notification-group', variable: 'GROUP_ID')]){
+                        def url = http://aspnetcore:32080/api/Alert/AlertWebhook"
+                        def jsonBody = '{"StatusCode": "failure"}'
+                        sh '''
+                            curl -X POST -H 'Content-Type: application/json' -d '${jsonBody}' ${url}
+                        '''
+                    }
+                }
+            }
+        }
+        
+    }
+}
