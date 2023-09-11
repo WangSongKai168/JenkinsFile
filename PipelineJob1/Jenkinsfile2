@@ -33,7 +33,7 @@ pipeline {
                         url = "http://aspnetcore/api/Alert/AlertWebhook"
                         jsonBody = '{"StatusCode": "SUCCESS"}'
                         sh '''
-                            curl -X POST -H 'Content-Type: application/json' -d '${jsonBody}' '${url}'
+                            curl -X POST -H 'Content-Type: application/json' -d ${jsonBody} ${url}
                         '''
                     }
                 }
@@ -47,7 +47,7 @@ pipeline {
                         url = "http://aspnetcore/api/Alert/AlertWebhook"
                         jsonBody = '{"StatusCode": "FAILURE"}'
                         sh '''
-                            curl -X POST -H 'Content-Type: application/json' -d '${jsonBody}' '${url}'
+                            curl -X POST -H 'Content-Type: application/json' -d ${jsonBody} ${url}
                         '''
                     }
                 }
