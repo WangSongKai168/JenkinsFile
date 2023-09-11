@@ -30,10 +30,10 @@ pipeline {
             script {
                 withCredentials([string(credentialsId: 'TOKEN', variable: 'TOKEN')]){
                     withCredentials([string(credentialsId: 'GROUP_ID', variable: 'GROUP_ID')]){
-                        url = "http://aspnetcore/api/Alert/AlertWebhook"
+                        url = 'http://aspnetcore/api/Alert/AlertWebhook'
                         jsonBody = '{"StatusCode": "SUCCESS"}'
                         sh '''
-                            curl -X POST -H 'Content-Type: application/json' -d ${jsonBody} ${url}
+                            curl -X POST -H 'Content-Type: application/json' -d '${jsonBody}' ${url}
                         '''
                     }
                 }
@@ -44,10 +44,10 @@ pipeline {
             script {
                 withCredentials([string(credentialsId: 'TOKEN', variable: 'TOKEN')]){
                     withCredentials([string(credentialsId: 'GROUP_ID', variable: 'GROUP_ID')]){
-                        url = "http://aspnetcore/api/Alert/AlertWebhook"
+                        url = 'http://aspnetcore/api/Alert/AlertWebhook'
                         jsonBody = '{"StatusCode": "FAILURE"}'
                         sh '''
-                            curl -X POST -H 'Content-Type: application/json' -d ${jsonBody} ${url}
+                            curl -X POST -H 'Content-Type: application/json' -d '${jsonBody}' ${url}
                         '''
                     }
                 }
