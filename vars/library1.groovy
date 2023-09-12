@@ -31,8 +31,9 @@ def call(Map args) {
                 script {
                     withCredentials([string(credentialsId: 'TOKEN', variable: 'TOKEN')]){
                         withCredentials([string(credentialsId: 'GROUP_ID', variable: 'GROUP_ID')]){
+                            def domain = args.domain
                             sh '''
-                                curl -X POST -H 'Content-Type: application/json' -d '{"Domain": "${args.domain}", "StatusCode": "SUCCESS"}' http://aspnetcore/api/Alert/AlertWebhook
+                                curl -X POST -H 'Content-Type: application/json' -d '{"Domain": "$domain", "StatusCode": "SUCCESS"}' http://aspnetcore/api/Alert/AlertWebhook
                             '''
                         }
                     }
@@ -43,8 +44,9 @@ def call(Map args) {
                 script {
                     withCredentials([string(credentialsId: 'TOKEN', variable: 'TOKEN')]){
                         withCredentials([string(credentialsId: 'GROUP_ID', variable: 'GROUP_ID')]){
+                            def domain = args.domain
                             sh '''
-                                curl -X POST -H 'Content-Type: application/json' -d '{"Domain": "${args.domain}", "StatusCode": "FAILURE"}' http://aspnetcore/api/Alert/AlertWebhook
+                                curl -X POST -H 'Content-Type: application/json' -d '{"Domain": "$domain", "StatusCode": "FAILURE"}' http://aspnetcore/api/Alert/AlertWebhook
                             '''
                         }
                     }
