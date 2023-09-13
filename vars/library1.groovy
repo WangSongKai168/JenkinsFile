@@ -1,3 +1,13 @@
+def check_server_status(list) {
+    for (int i = 0; i < list.size(); i++) {
+        stage("${list[i]} server status"){
+            //sh "curl ${list[i]}"
+            // testing
+            echo "curl ${list[i]}"
+        }
+    }
+}
+
 def call(Map args) {
     pipeline {
         agent any
