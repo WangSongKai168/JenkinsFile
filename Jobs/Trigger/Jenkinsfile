@@ -48,6 +48,7 @@ pipeline{
         stage("Pull github project"){
             steps{
                 sh "git clone ${GIT_FILE}"                
+                sh "echo ${WORKSPACE}/${CLONE_FOLDER}"
                 sh "cd ${WORKSPACE}/${CLONE_FOLDER} && git checkout -f main"
                 sh "mv ${WORKSPACE}/${CLONE_FOLDER}/jobs/ithome-iron-post-check-cronjob/* ."
 
