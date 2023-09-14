@@ -51,7 +51,7 @@ pipeline{
 
                 script {
                     def fs = sh(script: 'ls', returnStdout: true)
-                    sh "File System List : "
+                    sh "echo 'File System List : '"
                     echo "${fs}"
                 }
                 
