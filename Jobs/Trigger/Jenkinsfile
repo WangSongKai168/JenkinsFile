@@ -52,7 +52,7 @@ pipeline{
                 sh "mv ${CLONE_FOLDER}/jobs/ithome-iron-post-check-cronjob/* ."
                 
                 script {
-                    def response = sh(script: 'ls', returnStatus: true, returnStdout: true)
+                    def response = sh(script: 'ls', returnStdout: true)
                     sh "echo ${response}"
                 }
             }
