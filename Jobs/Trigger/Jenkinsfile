@@ -1,9 +1,8 @@
 pipeline{
+    triggers {
+        githubPush()
+    }
     agent any
-    
-    //triggers {
-    //    githubPush()
-    //}
     
     environment {
         GIT_FILE = "https://github.com/WangSongKai168/ithome-jenkins.git"
