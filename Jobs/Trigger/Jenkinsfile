@@ -50,6 +50,11 @@ pipeline{
                 sh "git clone ${GIT_FILE}"
                 sh "cd ${CLONE_FOLDER} && git checkout -f main"
                 sh "mv ${CLONE_FOLDER}/jobs/ithome-iron-post-check-cronjob/* ."
+                
+                script {
+                    def response = sh(script: 'ls', returnStatus: true, returnStdout: true)
+                    sh "echo ${response}"
+                }
             }
         }
         //stage("Lint"){
@@ -64,12 +69,6 @@ pipeline{
         //}
         stage("Build"){
             steps{
-                //script {
-                //    def lsOutput = sh(script: 'ls', returnStdout: true)
-                //    sh "echo ${lsOutput}"                    
-                //}
-
-                //echo "docker build -t ithome-crawler:latest ."
                 script {
                     def dockerBuildCmd = 'docker build -t ithome-crawler:latest .'
                     def exitCode = sh(script: dockerBuildCmd, returnStatus: true, returnStdout: true)
