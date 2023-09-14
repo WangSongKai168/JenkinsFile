@@ -48,14 +48,15 @@ pipeline{
         stage("Pull github project"){
             steps{
                 sh "git clone ${GIT_FILE}"                
-                sh "echo ${WORKSPACE}/${CLONE_FOLDER}"
-                sh "cd ${WORKSPACE}/${CLONE_FOLDER} && git checkout -f main"
-                sh "mv ${WORKSPACE}/${CLONE_FOLDER}/jobs/ithome-iron-post-check-cronjob/* ."
 
-                script {
-                    def fs = sh(script: 'ls', returnStdout: true)
-                    sh "echo 'File System List : '"
-                    echo "${fs}"
+                dir(path: "${WORKSPACE}/${CLONE_FOLDER}") {
+                    script {
+                        def fs = sh(script: 'ls', returnStdout: true)
+                        sh "echo 'File System List : '"
+                        echo "${fs}"
+                        sh "git checkout -f main"
+                        //sh "mv ${WORKSPACE}/${CLONE_FOLDER}/jobs/ithome-iron-post-check-cronjob/* ." 
+                    }                   
                 }
             }
         }
@@ -71,14 +72,16 @@ pipeline{
         //}
         stage("Build"){
             steps{
-                script {
-                    def dockerBuildCmd = 'docker build -t ithome-crawler:latest .'
-                    def exitCode = sh(script: dockerBuildCmd, returnStatus: true, returnStdout: true)
-                    if (exitCode == 0) {
-                        echo "Docker build succeeded."
-                    } else {
-                        error "Docker build failed with exit code ${exitCode}"
-                    }
+                dir(path: "${WORKSPACE}/${CLONE_FOLDER}") {
+                    script {
+                        def dockerBuildCmd = 'docker build -t ithome-crawler:latest .'
+                        def exitCode = sh(script: dockerBuildCmd, returnStatus: true, returnStdout: true)
+                        if (exitCode == 0) {
+                            echo "Docker build succeeded."
+                        } else {
+                            error "Docker build failed with exit code ${exitCode}"
+                        }
+                    }                    
                 }
             }
         }
