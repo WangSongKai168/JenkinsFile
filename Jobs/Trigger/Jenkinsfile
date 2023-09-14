@@ -52,7 +52,7 @@ pipeline{
                 script {
                     def fs = sh(script: 'ls', returnStdout: true)
                     sh "File System List : "
-                    sh "echo ${fs}"
+                    echo "${fs}"
                 }
                 
                 sh "cd ${CLONE_FOLDER} && git checkout -f main"
