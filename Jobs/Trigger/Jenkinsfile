@@ -6,6 +6,7 @@ pipeline{
     //}
     
     environment {
+        GIT_FILE = "https://github.com/WangSongKai168/ithome-jenkins.git"
         IMAGE_REFERENCE = "ithome-crawler:latest"
     }
 
@@ -45,7 +46,7 @@ pipeline{
         }
         stage("Pull github project"){
             steps{
-                sh "git clone https://github.com/WangSongKai168/jenkins-shared-library-examples.git"
+                sh "git clone ${GIT_FILE}"
                 sh "cd jenkins-ithome && git checkout -f day16"
                 sh "mv jenkins-ithome/jobs/ithome-iron-post-check-cronjob/* ."
             }
