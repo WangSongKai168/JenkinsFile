@@ -1,0 +1,101 @@
+pipeline{
+    agent any
+    
+    //triggers {
+    //    githubPush()
+    //}
+    
+    environment {
+        IMAGE_REFERENCE = "ithome-crawler:latest"
+    }
+
+    stages{
+        //stage("Setup Virtual Env"){
+        //    steps{
+        //        sh '''
+        //        #!/bin/bash
+        //        virtualenv venv
+        //        source venv/bin/activate
+        //        pip install -r requirements.txt
+        //        pip install pylint
+        //        '''
+        //    }
+        //}
+        stage("Setup Registry Auth"){
+            steps{
+                // 登錄到 Github Docker Hub
+                //withCredentials([usernamePassword(credentialsId: 'GITHUB', usernameVariable: 'USER', passwordVariable: 'TOKEN')]){
+                //    script{
+                //        sh "docker login docker.pkg.github.com -u ${USER} -p ${TOKEN}"
+                //    }
+                //}
+                
+                // 登錄到 Docker Hub
+                withCredentials([usernamePassword(credentialsId: 'DOCKER', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]){
+                    script{
+                        sh "docker login -u ${USER} -p ${PASSWORD}"
+                    }
+                }
+            }
+        }
+        stage('Configure Git') {
+            steps {
+                sh 'git config --global --add safe.directory ${WORKSPACE}/jenkins-ithome'
+            }
+        }
+        stage("Pull github project"){
+            steps{
+                sh "git clone https://github.com/WangSongKai168/jenkins-shared-library-examples.git"
+                sh "cd jenkins-ithome && git checkout -f day16"
+                sh "mv jenkins-ithome/jobs/ithome-iron-post-check-cronjob/* ."
+            }
+        }
+        //stage("Lint"){
+        //    steps{
+        //        sh "pylint --fail-under=10 src"
+        //    }
+        //}
+        //stage("Test"){
+        //    steps{
+        //        sh "pytest tests"
+        //    }
+        //}
+        stage("Build"){
+            steps{
+                //script {
+                //    def lsOutput = sh(script: 'ls', returnStdout: true)
+                //    sh "echo ${lsOutput}"                    
+                //}
+
+                //echo "docker build -t ithome-crawler:latest ."
+                script {
+                    def dockerBuildCmd = 'docker build -t ithome-crawler:latest .'
+                    def exitCode = sh(script: dockerBuildCmd, returnStatus: true, returnStdout: true)
+                    if (exitCode == 0) {
+                        echo "Docker build succeeded."
+                    } else {
+                        error "Docker build failed with exit code ${exitCode}"
+                    }
+                }
+            }
+        }
+        stage("Push"){
+            steps{
+                sh "docker tag ${IMAGE_REFERENCE} jjwang1979/${IMAGE_REFERENCE}"
+                sh "docker push jjwang1979/${IMAGE_REFERENCE}"
+            }
+        }
+        //stage("House keeping"){
+        //    steps{
+        //        sh "rm -rf ."
+        //    }
+        //}
+    }
+    
+    post {
+        always {
+            // 刪除整個工作空間
+            deleteDir()
+        }
+    }
+}
