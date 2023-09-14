@@ -48,8 +48,8 @@ pipeline{
         stage("Pull github project"){
             steps{
                 sh "git clone ${GIT_FILE}"
-                //sh "cd ${CLONE_FOLDER} && git checkout -f day16"
-                //sh "mv ${CLONE_FOLDER}/jobs/ithome-iron-post-check-cronjob/* ."
+                sh "cd ${CLONE_FOLDER} && git checkout -f main"
+                sh "mv ${CLONE_FOLDER}/jobs/ithome-iron-post-check-cronjob/* ."
             }
         }
         //stage("Lint"){
